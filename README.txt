@@ -17,6 +17,7 @@ water: raises thirst to 100
 cuddle or kiss: raises love to 100
 kill: euthanizes hamtaro
 time: debugging tool to test attributes going to zero
+quit: exits the game
 
 When hamtaro is killed or any of his attributes reach zero,
 a message describing why he died is displayed.
