@@ -12,7 +12,7 @@ class Hamster():
         self.hunger = 100
 
     def water(self):
-        self.water = 100
+        self.thirst = 100
 
     def care(self):
         self.love = 100
@@ -44,7 +44,7 @@ class Hamster():
             elif hunger and thirst:
                 print("Hamtaro died of emotional neglect! You feel shame.")
 
-            elif hunger or thirst or love:
+            else:
                 print("Hamtaro died of multiple causes! You feel shame.")
                 
         if self.euthanize == True:
@@ -90,16 +90,19 @@ while hamtaro.alive:
         hamtaro.kill()
 
     elif command == "time":
-        lower_limit = lambda val: int((abs(val)+val)/2)
+        
+        clamp_zero = lambda val: int((abs(val)+val)/2)
 
-        hamtaro.hunger = lower_limit(hamtaro.hunger - 10)
-        hamtaro.thirst = lower_limit(hamtaro.thirst - 10)
-        hamtaro.love = lower_limit(hamtaro.love - 10)
-        
-        
+        hamtaro.hunger = clamp_zero(hamtaro.hunger - 10)
+        hamtaro.thirst = clamp_zero(hamtaro.thirst - 10)
+        hamtaro.love = clamp_zero(hamtaro.love - 10)
+               
     elif command == "?":
-        print("feed: raises hamtaro's hunger to 100%.\nwater: raises hamtaro's thirst to 100%.\ncuddle or kiss: raises hamtaro's love to 100%.\ncheck: displays hamtaro's vitals.\nkill: puts hamtaro out of his misery.")
-     
+        print("feed: raises hamtaro's hunger to 100%.\nwater: raises hamtaro's thirst to 100%.\ncuddle or kiss: raises hamtaro's love to 100%.\ncheck: displays hamtaro's vitals.\nkill: puts hamtaro out of his misery.\ntime: passes time and reduces all attributes by 10.\nquit: exits the game.")
+
+    elif command == "quit":
+        exit()
+        
     else:
         print("unknown command")
 
