@@ -9,7 +9,7 @@ class Hamster():
         self.euthanize = False
 
     def feed(self):
-        self.food = 100
+        self.hunger = 100
 
     def water(self):
         self.water = 100
@@ -50,6 +50,7 @@ class Hamster():
         if self.euthanize == True:
             self.alive = False
             print("Hamtaro died from euthanasia. You feel shame.")
+            
 
 
             
