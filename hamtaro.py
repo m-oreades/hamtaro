@@ -1,24 +1,41 @@
 import random
 
-
-
-    
 class Hamster():
     def __init__(self, hunger, thirst, love):
         self.hunger = hunger
         self.thirst = thirst
         self.love = love
         self.alive = True
-        self.euthanize = False
+        
+        self.euthanize = False  
+        self.starve = False
+        self.dehydrate = False
+        self.neglect = False
+
 
     def feed(self):
-        self.hunger = 100
+        if self.hunger < 100:
+            self.hunger = 100
+            print("You refill hamtaro's food, restoring his hunger.")
+        else:
+            print("Hamtaro is already full!")
 
     def water(self):
-        self.thirst = 100
+        if self.thirst < 100:
+            self.thirst = 100
+            print("You refill hamtaro's water, restoring his thirst.")
+        else:
+            print("Hamtaro is fully hydrated!")
 
-    def care(self):
-        self.love = 100
+    def care(self, affection):
+        if self.love < 100:
+            self.love = 100
+            if affection == "cuddle":
+                print("You cuddle with hamtaro, restoring his love.")
+            elif affection == "kiss":
+                print("You give Hamtaro a kiss on the head, restoring his love.")
+        else:
+            print("Hamtaro is already completely loved!")
         
     cuddle = care
     kiss = care
@@ -29,22 +46,28 @@ class Hamster():
 
     def kill(self):
         self.euthanize = True
-      
-    def update(self):
-        hunger = self.hunger
-        thirst = self.thirst
-        love = self.love
-        
-        if not hunger or not thirst or not love:
+
+    def check_life(self):
+        if self.hunger <= 0:
+            self.starve = True 
+            
+        if self.thirst <= 0:
+            self.dehydrate = True
+   
+        if self.love <= 0:
+            self.neglect = True
+         
+        if self.starve == True or self.dehydrate == True or self.neglect == True:
+            
             self.alive = False
-                
-            if thirst and love:
+            
+            if self.dehydrate == False and self.neglect == False:
                 print("Hamtaro died of hunger! You feel shame.")
                 
-            elif love and hunger:
+            elif self.starve == False and self.neglect == False:
                 print("Hamtaro died of thirst! You feel shame.")
                 
-            elif hunger and thirst:
+            elif self.starve == False and self.dehydrate == False:
                 print("Hamtaro died of emotional neglect! You feel shame.")
 
             else:
@@ -53,12 +76,11 @@ class Hamster():
         if self.euthanize == True:
             self.alive = False
             print("Hamtaro died from euthanasia. You feel shame.")
-            
-
 
             
-
-        
+    def update(self):
+        self.check_life()
+       
 def rand():
     return random.randrange(1,100)
     
@@ -73,35 +95,27 @@ if __name__ == '__main__':
         command = input("What will you do?\n")
 
         if command == "feed":
-            hamtaro.feed()
-            print("You refill hamtaro's food, restoring his hunger.")
+            hamtaro.feed()         
             
         elif command == "water":
-            hamtaro.water()
-            print("You refill hamtaro's water, restoring his thirst.")
+            hamtaro.water()           
             
-        elif command == "cuddle":
-            hamtaro.cuddle()
-            print("You cuddle with hamtaro, restoring his love.")
-
-        elif command == "kiss":
-            hamtaro.kiss()
-            print("You give hamtaro a kiss on the head, restoring his love.")
+        elif command == "cuddle" or command == "kiss":
+            hamtaro.care(command)
 
         elif command == "check":
             hamtaro.check()
             
         elif command == "kill":
             hamtaro.kill()
-
-        elif command == "time":
             
-            clamp_zero = lambda val: int((abs(val)+val)/2)
-
-            hamtaro.hunger = clamp_zero(hamtaro.hunger - 10)
-            hamtaro.thirst = clamp_zero(hamtaro.thirst - 10)
-            hamtaro.love = clamp_zero(hamtaro.love - 10)
-                   
+## sleighted for removal
+        elif command == "time":
+            hamtaro.hunger -= 10
+            hamtaro.thirst -= 10
+            hamtaro.love -= 10
+##
+            
         elif command == "?":
             print("feed: raises hamtaro's hunger to 100%.\nwater: raises hamtaro's thirst to 100%.\ncuddle or kiss: raises hamtaro's love to 100%.\ncheck: displays hamtaro's vitals.\nkill: puts hamtaro out of his misery.\ntime: passes time and reduces all attributes by 10.\nquit: exits the game.")
 
@@ -110,6 +124,7 @@ if __name__ == '__main__':
             
         else:
             print("unknown command")
+
 
         hamtaro.update()
 
