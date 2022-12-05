@@ -1,5 +1,8 @@
 import random
 
+
+
+    
 class Hamster():
     def __init__(self, hunger, thirst, love):
         self.hunger = hunger
@@ -61,49 +64,52 @@ def rand():
     
 hamtaro = Hamster(rand(), rand(), rand())
 
-print("this is hamtaro, please take care of him. You can type commands to interact with hamtaro. type '?' for a list of commands.")
-while hamtaro.alive:
-
+if __name__ == '__main__':
     
-    command = input("What will you do?\n")
+    print("this is hamtaro, please take care of him. You can type commands to interact with hamtaro. type '?' for a list of commands.")
+    while hamtaro.alive:
 
-    if command == "feed":
-        hamtaro.feed()
-        print("You refill hamtaro's food, restoring his hunger.")
         
-    elif command == "water":
-        hamtaro.water()
-        print("You refill hamtaro's water, restoring his thirst.")
-        
-    elif command == "cuddle":
-        hamtaro.cuddle()
-        print("You cuddle with hamtaro, restoring his love.")
+        command = input("What will you do?\n")
 
-    elif command == "kiss":
-        hamtaro.kiss()
-        print("You give hamtaro a kiss on the head, restoring his love.")
+        if command == "feed":
+            hamtaro.feed()
+            print("You refill hamtaro's food, restoring his hunger.")
+            
+        elif command == "water":
+            hamtaro.water()
+            print("You refill hamtaro's water, restoring his thirst.")
+            
+        elif command == "cuddle":
+            hamtaro.cuddle()
+            print("You cuddle with hamtaro, restoring his love.")
 
-    elif command == "check":
-        hamtaro.check()
-        
-    elif command == "kill":
-        hamtaro.kill()
+        elif command == "kiss":
+            hamtaro.kiss()
+            print("You give hamtaro a kiss on the head, restoring his love.")
 
-    elif command == "time":
-        
-        clamp_zero = lambda val: int((abs(val)+val)/2)
+        elif command == "check":
+            hamtaro.check()
+            
+        elif command == "kill":
+            hamtaro.kill()
 
-        hamtaro.hunger = clamp_zero(hamtaro.hunger - 10)
-        hamtaro.thirst = clamp_zero(hamtaro.thirst - 10)
-        hamtaro.love = clamp_zero(hamtaro.love - 10)
-               
-    elif command == "?":
-        print("feed: raises hamtaro's hunger to 100%.\nwater: raises hamtaro's thirst to 100%.\ncuddle or kiss: raises hamtaro's love to 100%.\ncheck: displays hamtaro's vitals.\nkill: puts hamtaro out of his misery.\ntime: passes time and reduces all attributes by 10.\nquit: exits the game.")
+        elif command == "time":
+            
+            clamp_zero = lambda val: int((abs(val)+val)/2)
 
-    elif command == "quit":
-        exit()
-        
-    else:
-        print("unknown command")
+            hamtaro.hunger = clamp_zero(hamtaro.hunger - 10)
+            hamtaro.thirst = clamp_zero(hamtaro.thirst - 10)
+            hamtaro.love = clamp_zero(hamtaro.love - 10)
+                   
+        elif command == "?":
+            print("feed: raises hamtaro's hunger to 100%.\nwater: raises hamtaro's thirst to 100%.\ncuddle or kiss: raises hamtaro's love to 100%.\ncheck: displays hamtaro's vitals.\nkill: puts hamtaro out of his misery.\ntime: passes time and reduces all attributes by 10.\nquit: exits the game.")
 
-    hamtaro.update()
+        elif command == "quit":
+            exit()
+            
+        else:
+            print("unknown command")
+
+        hamtaro.update()
+
