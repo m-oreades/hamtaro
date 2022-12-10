@@ -1,151 +1,133 @@
 import unittest
-import hamtaro
+import json
+from hamtaro import Hamster as Hamster
 
-hamtaro = hamtaro.Hamster(100,100,100)
-
+#test hamster death causes
 class TestHamsterDeath(unittest.TestCase):
-    
+    # setup
+    def setUp(self):
+        self.hamster = Hamster(100,100,100)
+
+    # hunger
     def test_hunger(self):
-        print("testing death by hunger")
-        TestHamsterDeath.reset()
-        hamtaro.hunger = 0
-        hamtaro.update()
-        result = hamtaro.alive
+        self.hamster.hunger = 0
+        self.hamster.update()
+        result = self.hamster.alive
         self.assertFalse(result)
 
+    # thirst
     def test_thirst(self):
-        print("testing death by thirst")
-        TestHamsterDeath.reset()
-        hamtaro.thirst = 0
-        hamtaro.update()
-        result = hamtaro.alive
+        self.hamster.thirst = 0
+        self.hamster.update()
+        result = self.hamster.alive
         self.assertFalse(result)
 
-        
+    # love
     def test_love(self):
-        print("testing death by lack of love")
-        TestHamsterDeath.reset()
-        hamtaro.love = 0
-        hamtaro.update()
-        result = hamtaro.alive
+        self.hamster.love = 0
+        self.hamster.update()
+        result = self.hamster.alive
         self.assertFalse(result)
 
-        
+    # kill
     def test_kill(self):
-        print("testing kill")
-        TestHamsterDeath.reset()
-        hamtaro.kill()
-        hamtaro.update()
-        result = hamtaro.alive
+        self.hamster.kill()
+        self.hamster.update()
+        result = self.hamster.alive
         self.assertFalse(result)
 
-
-    def reset():
-        hamtaro.hunger = 100
-        hamtaro.thirst = 100
-        hamtaro.love = 100
-        hamtaro.alive = True
-        
-        hamtaro.euthanize = False
-        hamtaro.starve = False
-        hamtaro.dehydrate = False
-        hamtaro.neglect = False
-
-
+# test hamster attribute increase
 class TestHamsterRestore(unittest.TestCase):
-    
+    # setup
+    def setUp(self):
+        self.hamster = Hamster(50,50,50)
+
+    # hunger
     def test_hunger(self):
-        print("testing restore hunger")
-        TestHamsterRestore.reset()
-        hamtaro.feed()
-        hamtaro.update()
-        result = hamtaro.hunger
+        self.hamster.feed()
+        self.hamster.update()
+        result = self.hamster.hunger
         self.assertEqual(result, 100)
-        print(hamtaro.hunger)
 
+    # thirst
     def test_thirst(self):
-        print("testing restore thirst")
-        TestHamsterRestore.reset()
-        hamtaro.water()
-        hamtaro.update()
-        result = hamtaro.thirst
+        self.hamster.water()
+        self.hamster.update()
+        result = self.hamster.thirst
         self.assertEqual(result, 100)
-        print(hamtaro.thirst)
 
-        
+    # love-kiss
     def test_love_kiss(self):
-        print("testing restore love(kiss)")
-        TestHamsterRestore.reset()
-        hamtaro.care("kiss")
-        hamtaro.update()
-        result = hamtaro.love
+        self.hamster.care("kiss")
+        self.hamster.update()
+        result = self.hamster.love
         self.assertEqual(result, 100)
-        print(hamtaro.love)
         
+    # love-cuddle
     def test_love_cuddle(self):
-        print("testing restore love(cuddle)")
-        TestHamsterRestore.reset()
-        hamtaro.care("cuddle")
-        hamtaro.update()
-        result = hamtaro.love
+        self.hamster.care("cuddle")
+        self.hamster.update()
+        result = self.hamster.love
         self.assertEqual(result, 100)
-        print(hamtaro.love)
 
+# test hamster attribute increase won't surpass 100
+class TestHamsterRestoreFull(unittest.TestCase):
+    # setup
+    def setUp(self):
+        self.hamster = Hamster(100,100,100)
+
+    # hunger
     def test_full_hunger(self):
-        print("testing restore hunger when hunger is maxed")
-        TestHamsterRestore.reset_full()
-        hamtaro.feed()
-        hamtaro.update()
-        result = hamtaro.hunger
+        self.hamster.feed()
+        self.hamster.update()
+        result = self.hamster.hunger
         self.assertEqual(result, 100)
-        
+
+    # thirst
     def test_full_thirst(self):
-        print("testing restore thirst  when thirst is maxed")
-        TestHamsterRestore.reset_full()
-        hamtaro.water()
-        hamtaro.update()
-        result = hamtaro.thirst
+        self.hamster.water()
+        self.hamster.update()
+        result = self.hamster.thirst
         self.assertEqual(result, 100)
-        
+
+    # love-kiss
     def test_full_love_kiss(self):
-        print("testing restore love when love is maxed(kiss)")
-        TestHamsterRestore.reset_full()
-        hamtaro.care("kiss")
-        hamtaro.update()
-        result = hamtaro.love
+        self.hamster.care("kiss")
+        self.hamster.update()
+        result = self.hamster.love
         self.assertEqual(result, 100)
         
+    # love-cuddle
     def test_full_love_cuddle(self):
-        print("testing restore love when love is maxed(cuddle)")
-        TestHamsterRestore.reset_full()
-        hamtaro.care("cuddle")
-        hamtaro.update()
-        result = hamtaro.love
+        self.hamster.care("cuddle")
+        self.hamster.update()
+        result = self.hamster.love
         self.assertEqual(result, 100)
 
+# test json load/save
+class TestJsonLoadSave(unittest.TestCase):
+    # setup
+    def setUp(self):
+        #set json file to an empty dict
+        with open('data.json', 'w') as f:
+            json.dump({}, f)
 
-    def reset():
-        hamtaro.hunger = 50
-        hamtaro.thirst = 50
-        hamtaro.love = 50
-        hamtaro.alive = True
-        
-        hamtaro.euthanize = False
-        hamtaro.starve = False
-        hamtaro.dehydrate = False
-        hamtaro.neglect = False
-        
-    def reset_full():
-        hamtaro.hunger = 100
-        hamtaro.thirst = 100
-        hamtaro.love = 100
-        hamtaro.alive = True
-        
-        hamtaro.euthanize = False
-        hamtaro.starve = False
-        hamtaro.dehydrate = False
-        hamtaro.neglect = False
+        self.hamster = Hamster()
+    
+    # write to json
+    def test_write_to_json(self):
+        self.hamster.update()
+        with open('data.json') as f:      
+            result = json.load(f)
+        self.assertEqual(result,vars(self.hamster))
 
+    # erase
+    def test_erase(self):
+        self.hamster.update()
+        self.hamster.kill()
+        with open('data.json') as f:      
+            result = json.load(f)
+        self.assertEqual(result,{})
 
 if __name__ == '__main__':
     unittest.main()
