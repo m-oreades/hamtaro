@@ -132,9 +132,7 @@ class Hamster():
         self.health_update()
         
         self.check_life()
-        if self.alive == False:
-            self.die()
-        else:
+        if self.alive == True:
             write(self)
        
 #command_process
