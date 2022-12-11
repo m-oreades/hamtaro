@@ -104,6 +104,22 @@ class TestHamsterRestoreFull(unittest.TestCase):
         result = self.hamster.love
         self.assertEqual(result, 100)
 
+class TestTimePass(unittest.TestCase):
+    #setup
+    def setUp(self):
+        self.hamster = Hamster()
+
+    def test_time_pass(self):
+        self.hamster.last_checked += 1
+        result = self.hamster.last_checked - self.hamster.birthday
+        self.assertEqual(result, 1)
+        
+    def test_time_death(self):
+        self.hamster.last_checked -= 100
+        self.hamster.update()
+        result = self.hamster.alive
+        self.assertFalse(result)
+
 # test json load/save
 class TestJsonLoadSave(unittest.TestCase):
     # setup
@@ -117,7 +133,7 @@ class TestJsonLoadSave(unittest.TestCase):
     # write to json
     def test_write_to_json(self):
         self.hamster.update()
-        with open('data.json') as f:      
+        with open('data.json') as f:
             result = json.load(f)
         self.assertEqual(result,vars(self.hamster))
 
@@ -125,9 +141,18 @@ class TestJsonLoadSave(unittest.TestCase):
     def test_erase(self):
         self.hamster.update()
         self.hamster.kill()
-        with open('data.json') as f:      
+        with open('data.json') as f:
             result = json.load(f)
-        self.assertEqual(result,{})
+        self.assertEqual(result, {})
+
+# zero limit
+class TestZeroLimit(unittest.TestCase):
+    
+    def test_zero_limit(self):
+        self.hamster = Hamster()
+        result = self.hamster.zero_limit(-40)
+        self.assertEqual(result, 0)
+
 
 if __name__ == '__main__':
     unittest.main()

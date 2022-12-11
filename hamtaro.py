@@ -25,7 +25,7 @@ class Hamster():
             self.hunger = 100
             print("You refill hamtaro's food, restoring his hunger.")
         else:
-            print("Hamtaro is already full!")
+            print("Hamtaro's food dish is already full!")
     
     # water
     def water(self):
@@ -33,7 +33,7 @@ class Hamster():
             self.thirst = 100
             print("You refill hamtaro's water, restoring his thirst.")
         else:
-            print("Hamtaro is fully hydrated!")
+            print("Hamtaro's water bottle is already full!")
 
     # care
     def care(self, affection_type):
@@ -46,12 +46,16 @@ class Hamster():
             elif affection_type == "kiss":
                 print("You give Hamtaro a kiss on the head, restoring his love.")
         else:
-            print("Hamtaro is already completely loved!")       
+            print("Hamtaro already feels completely loved!")  
     cuddle = care
     kiss = care
 
     # check
     def check(self):
+        self.health_update()
+        if self.hunger == 0 or self.thirst == 0 or self.love == 0:
+            self.die()
+
         status = f"hunger: {self.hunger}%\nthirst: {self.thirst}%\nlove: {self.love}%"
         print(status)
 
@@ -65,6 +69,26 @@ class Hamster():
         self.alive = False
         with open('data.json', 'w') as f:
             json.dump({}, f)
+
+    #zero_limit
+    def zero_limit(self,attribute):
+        if attribute < 0:
+            attribute = 0
+        return attribute
+
+    # health update
+    def health_update(self):
+        current_time = int(time.time()/10)
+        difference = current_time - self.last_checked
+        self.last_checked = current_time
+
+        self.hunger -= difference
+        self.thirst -= difference
+        self.love -= difference
+
+        self.hunger = self.zero_limit(self.hunger)
+        self.thirst = self.zero_limit(self.thirst)
+        self.love = self.zero_limit(self.love)
 
     # check life
     def check_life(self):
@@ -101,15 +125,11 @@ class Hamster():
             # more than one attribute reached 0:
             else:
                 print("Hamtaro died of multiple causes! You feel shame.")
-                 
+
     # update
     def update(self):
-        current_time = int(time.time()/10)
-        difference = current_time - self.last_checked
-        self.last_checked = current_time
-        self.hunger -= difference
-        self.thirst -= difference
-        self.love -= difference
+
+        self.health_update()
         
         self.check_life()
         if self.alive == False:
@@ -137,7 +157,7 @@ def command_process():
         hamtaro.kill()
         
     elif command == "?":
-        print("feed: raises hamtaro's hunger to 100%.\nwater: raises hamtaro's thirst to 100%.\ncuddle or kiss: raises hamtaro's love to 100%.\ncheck: displays hamtaro's vitals.\nkill: puts hamtaro out of his misery.\ntime: passes time and reduces all attributes by 10.\nquit: exits the game.")
+        print("feed: raises hamtaro's hunger to 100%.\nwater: raises hamtaro's thirst to 100%.\ncuddle or kiss: raises hamtaro's love to 100%.\ncheck: displays hamtaro's vitals.\nkill: puts hamtaro out of his misery.\nquit: exits the game.")
 
     elif command == "quit":
         exit()
@@ -168,11 +188,9 @@ if __name__ == '__main__':
     
     print("this is hamtaro, please take care of him. You can type commands to interact with hamtaro. type '?' for a list of commands.")
     while hamtaro.alive:
-        
-        hamtaro.update()
         command_process()
-        
         hamtaro.update()
+        
         
 
 
