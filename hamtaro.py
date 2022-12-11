@@ -5,9 +5,9 @@ import time
 class Hamster():
     # init
     def __init__(self,
-                 hunger = 2,
-                 thirst = 2,
-                 love = 2,
+                 hunger = 50,
+                 thirst = 50,
+                 love = 50,
                  birthday = int(time.time()/10),
                  last_checked = int(time.time()/10),
                  alive = True):
